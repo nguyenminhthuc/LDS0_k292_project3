@@ -1,0 +1,9 @@
+streamlit
+numpy
+pandas
+matplotlib
+seaborn
+scikit-learn
+findspark==2.0.1
+pyspark==3.4.2
+feature-engine
