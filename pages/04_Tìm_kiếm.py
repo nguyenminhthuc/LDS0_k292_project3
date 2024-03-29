@@ -2,7 +2,7 @@
 # Họ tên:   Nguyễn Minh Thức
 # Lớp:      LDS0_k292 – ONLINE
 # Email:    nguyenminhthuc1987@gmail.com
-# Link:     https://lds0k292project3-bbpkwwh8ghk6ctuhqumurz.streamlit.app/
+# Link:     https://lds0k292project3-fjkgkvwzxabyzuptxsnzkm.streamlit.app/
 ###############################################################################
 
 import streamlit as st
