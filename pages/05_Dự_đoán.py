@@ -29,6 +29,8 @@ spark = SparkSession(sc)
 
 
 st.set_page_config(page_title="Dự đoán")
+# sample data
+df_sample = pd.read_csv("artifact/sample.csv")
 # pyspark model
 model = KMeansModel.load("artifact/model_KMeans_pyspark")
 # Yeo-Johnson transformer
@@ -115,12 +117,35 @@ elif type == "Upload file":
             st.warning('file upload chứa dữ liệu không hợp lệ!', icon="⚠️")
         
         # st.write(df)
+    with st.expander("**Yêu cầu file upload như sau:**"):
+      st.markdown("""
+* File có định dạng **.csv**
+* Có 3 cột: **Recency**, **Frequency**, **Monetary** 
+* Dữ liệu cho mỗi cột là kiểu **số nguyên hoặc số thập phân**
+* Ví dụ:
+
+| Recency  | Frequency  | Monetary  | 
+|---|---|---| 
+| 100  | 5  | 100.5  | 
+| 100  | 5  | 8924  |
+| 100  | 5  | 49076  |
+                """)
+      st.markdown('<div style="padding: 10px 5px;"></div>', unsafe_allow_html=True)
+      st.markdown("* Hoặc download **file mẫu** như sau:")    
+      st.dataframe(df_sample, hide_index=True)
+    
 
 st.write("# Danh sách RFM")
+with st.expander("**Giải thích kết quả như sau:**"):
+   st.image("images/KMeans_LDS9_SnakePlot_analysis_label.png")
+
 _, col1, _, col2 = st.columns((30, 100, 50, 150))
 with col1:
   if col1.button("Dự đoán"):
-      predict_RFM()
+      if len(st.session_state['RFM']) > 0:
+        predict_RFM()
+      else:
+         col1.warning('Vui lòng cung cấp thông tin RFM của khách hàng', icon="⚠️")
 with col2:
   if col2.button("Tạo mới"):
     st.session_state['RFM'] = []

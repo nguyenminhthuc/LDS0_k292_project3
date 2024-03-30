@@ -47,7 +47,8 @@ def print_data_2_cols(title, value):
       col2.write(value)
 
 st.subheader("Nhập mã khách hàng")
-customer_id = st.text_input("")
+# customer_id = st.text_input("")
+customer_id = st.selectbox(label=" ", placeholder="Nhập mã khác hàng, ví dụ: 14646", options=clustered_df.CustomerID.unique().tolist())
 if customer_id != "":
     try:
         customer_id = int(customer_id)
@@ -60,6 +61,8 @@ if customer_id != "":
 
             cluster_id = clustered_df[clustered_df.CustomerID==customer_id]['prediction'].tolist()[0]
             print_data_2_cols('* **Cluster**', cluster_map[cluster_id] + f" ({cluster_id})")
+            with st.expander("Giải thích Cluster:"):
+               st.image("images/KMeans_LDS9_SnakePlot_analysis_label.png")
 
             print_data_2_cols('* **Ngày giao dịch lần đầu**', df[df.CustomerID==customer_id]['Date'].min())
             print_data_2_cols('* **Ngày giao dịch gần nhất**', df[df.CustomerID==customer_id]['Date'].max())

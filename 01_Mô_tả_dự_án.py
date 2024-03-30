@@ -6,11 +6,13 @@
 ###############################################################################
 
 import streamlit as st
+import pandas as pd
 
 
 
 
 st.set_page_config(page_title="Mô tả dự án")
+df = pd.read_csv("data/OnlineRetail_cleaned.csv")
 
 
 
@@ -61,6 +63,14 @@ with col2:
 
 
 
+st.markdown('<div style="padding: 50px 5px;"></div>', unsafe_allow_html=True)
+st.markdown("### Dataset (random 10 samples)")
+st.dataframe(df.sample(10), hide_index=True)
+
+
+
+
+st.markdown('<div style="padding: 50px 5px;"></div>', unsafe_allow_html=True)
 st.markdown("### Tiền xử lý dữ liệu")
 st.image('images/Preprocessing.png')
 st.markdown('<div style="padding: 50px 5px;"></div>', unsafe_allow_html=True)
