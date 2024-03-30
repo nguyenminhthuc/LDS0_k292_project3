@@ -51,8 +51,8 @@ st.image("images/KMeans_LDS6_ScatterPlot.png")
 st.markdown('<div style="padding: 10px 5px;"></div>', unsafe_allow_html=True)
 st.markdown("""
 **HeatMap** => các cluster khác nhau **có sự chênh lệch đáng kể về số lượng customer trong mỗi cluster**
-* cao nhất là cluster OTHER có 1707 customer (~39.34%), 
-* thấp nhất là cluster NEW có 216 customer (~4.98%)
+* cao nhất là cluster 0 có 938 customer (~21.62%), 
+* thấp nhất là cluster 3 có 808 customer (~18.62%)
 """)
 st.image("images/KMeans_LDS6_HeatMap.png")
 
@@ -85,8 +85,8 @@ st.image("images/Hierarchical_LDS6_ScatterPlot.png")
 st.markdown('<div style="padding: 10px 5px;"></div>', unsafe_allow_html=True)
 st.markdown("""
 **HeatMap** => các cluster khác nhau **có sự chênh lệch đáng kể về số lượng customer trong mỗi cluster**
-* cao nhất là cluster OTHER có 1707 customer (~39.34%), 
-* thấp nhất là cluster NEW có 216 customer (~4.98%)
+* cao nhất là cluster 0 có 4279 customer (~98.62%)
+* thấp nhất là cluster 3 có 2 customer (~0.05%)
 """)
 st.image("images/Hierarchical_LDS6_HeatMap.png")
 
@@ -126,8 +126,8 @@ st.image("images/KMeans_LDS9_ScatterPlot.png")
 st.markdown('<div style="padding: 10px 5px;"></div>', unsafe_allow_html=True)
 st.markdown("""
 **HeatMap** => **các cluster khác nhau không có sự chênh lệch đáng kể về số lượng customer trong mỗi cluster**, 
-cao nhất là cluster 0 có 1250 customer (~28.81%), 
-thấp nhất là cluster 3 có 962 customer (~22.17%)
+* cao nhất là cluster 0 có 1250 customer (~28.81%), 
+* thấp nhất là cluster 3 có 962 customer (~22.17%)
 """)
 st.image("images/KMeans_LDS9_HeatMap.png")
 
