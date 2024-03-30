@@ -61,8 +61,9 @@ if customer_id != "":
 
             cluster_id = clustered_df[clustered_df.CustomerID==customer_id]['prediction'].tolist()[0]
             print_data_2_cols('* **Cluster**', cluster_map[cluster_id] + f" ({cluster_id})")
-            with st.expander("Giải thích Cluster:"):
-               st.image("images/KMeans_LDS9_SnakePlot_analysis_label.png")
+            with st.expander("**Giải thích cluster như sau:**"):
+              st.image("images/KMeans_LDS9_SnakePlot_analysis_label.png")
+              st.image("images/KMeans_LDS9_SnakePlot_edited.png")
 
             print_data_2_cols('* **Ngày giao dịch lần đầu**', df[df.CustomerID==customer_id]['Date'].min())
             print_data_2_cols('* **Ngày giao dịch gần nhất**', df[df.CustomerID==customer_id]['Date'].max())
@@ -70,6 +71,17 @@ if customer_id != "":
             print_data_2_cols('* **Recency**', clustered_df[clustered_df.CustomerID==customer_id]['Recency'].tolist()[0])
             print_data_2_cols('* **Frequency**', clustered_df[clustered_df.CustomerID==customer_id]['Frequency'].tolist()[0])
             print_data_2_cols('* **Monetary**', '$ {:,.2f}'.format(clustered_df[clustered_df.CustomerID==customer_id]['Monetary'].tolist()[0]))
+            with st.expander("**Giải thích RFM như sau:**"):
+              col1, padding, col2 = st.columns((150,10,200))
+              with col1:
+                col1.markdown("""
+* **Recency (R)**: đo lường **số ngày kể từ lần mua hàng cuối cùng (lần truy cập gần đây nhất) đến ngày giả định chung** để tính toán (ví dụ: ngày hiện tại, hoặc ngày max trong danh sách giao dịch).
+* **Frequency (F)**: đo lường **số lượng giao dịch** (tổng số lần mua hàng) được thực hiện trong thời gian nghiên cứu.
+* **Monetary Value (M)**: đo lường **số tiền** mà mỗi khách hàng đã chi tiêu trong thời gian nghiên cứu
+                            """)
+              with col2:
+                col2.image("images/RFMcube.png")
+                col2.image("images/rfm_highest_value_customer.png")
 
             st.markdown("* **Chi tiết các giao dịch**")
             st.dataframe(df[df.CustomerID==customer_id], hide_index=True)

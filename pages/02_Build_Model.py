@@ -50,7 +50,7 @@ st.image("images/KMeans_LDS6_ScatterPlot.png")
 
 st.markdown('<div style="padding: 10px 5px;"></div>', unsafe_allow_html=True)
 st.markdown("""
-**HeatMap** => các cluster khác nhau **có sự chênh lệch đáng kể về số lượng customer trong mỗi cluster**
+**HeatMap** => các cluster khác nhau **không chênh lệch đáng kể về số lượng customer trong mỗi cluster**
 * cao nhất là cluster 0 có 938 customer (~21.62%), 
 * thấp nhất là cluster 3 có 808 customer (~18.62%)
 """)
@@ -125,7 +125,7 @@ st.image("images/KMeans_LDS9_ScatterPlot.png")
 
 st.markdown('<div style="padding: 10px 5px;"></div>', unsafe_allow_html=True)
 st.markdown("""
-**HeatMap** => **các cluster khác nhau không có sự chênh lệch đáng kể về số lượng customer trong mỗi cluster**, 
+**HeatMap** => **các cluster khác nhau không chênh lệch đáng kể về số lượng customer trong mỗi cluster**, 
 * cao nhất là cluster 0 có 1250 customer (~28.81%), 
 * thấp nhất là cluster 3 có 962 customer (~22.17%)
 """)
@@ -137,7 +137,7 @@ col1, col2 = st.columns(2)
 with col1:
     st.image("images/KMeans_LDS9_SnakePlot_analysis.png")
 with col2:
-    st.image("images/KMeans_LDS9_SnakePlot.png")
+    st.image("images/KMeans_LDS9_SnakePlot_edited.png")
 
 
 

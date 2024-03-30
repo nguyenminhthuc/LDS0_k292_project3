@@ -67,7 +67,7 @@ with col1:
    col1.pyplot(fig)
 with col2:
    col2.markdown("<center><span style='font-weight:600;'>SnakePlot thể hiện RFM của các cluster</span></center>", unsafe_allow_html=True)
-   col2.image("images/KMeans_LDS9_SnakePlot.png")
+   col2.image("images/KMeans_LDS9_SnakePlot_edited.png")
 
 st.markdown("""### Các cluster không có sự chênh lệch lớn về số lượng customer, nhưng có sự khác biệt về RFM 
 * Có thể gán label mỗi cluster như sau:

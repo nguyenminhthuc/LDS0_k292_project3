@@ -12,7 +12,7 @@ import pandas as pd
 
 
 st.set_page_config(page_title="Mô tả dự án")
-df = pd.read_csv("data/OnlineRetail_cleaned.csv")
+df = pd.read_csv("data/OnlineRetail_cleaned.csv", index_col="Unnamed: 0")
 
 
 
@@ -64,7 +64,7 @@ with col2:
 
 
 st.markdown('<div style="padding: 50px 5px;"></div>', unsafe_allow_html=True)
-st.markdown("### Dataset (random 10 samples)")
+st.markdown("### Dataset (ví dụ 10 dòng dữ liệu)")
 st.dataframe(df.sample(10), hide_index=True)
 
 

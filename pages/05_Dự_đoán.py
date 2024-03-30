@@ -92,6 +92,17 @@ def predict_RFM():
 
 
 st.subheader("Nhập thông tin RFM của khách hàng")
+with st.expander("**Giải thích RFM như sau:**"):
+  col1, padding, col2 = st.columns((150,10,200))
+  with col1:
+    col1.markdown("""
+* **Recency (R)**: đo lường **số ngày kể từ lần mua hàng cuối cùng (lần truy cập gần đây nhất) đến ngày giả định chung** để tính toán (ví dụ: ngày hiện tại, hoặc ngày max trong danh sách giao dịch).
+* **Frequency (F)**: đo lường **số lượng giao dịch** (tổng số lần mua hàng) được thực hiện trong thời gian nghiên cứu.
+* **Monetary Value (M)**: đo lường **số tiền** mà mỗi khách hàng đã chi tiêu trong thời gian nghiên cứu
+                """)
+  with col2:
+    col2.image("images/RFMcube.png")
+    col2.image("images/rfm_highest_value_customer.png")
 # Cho người dùng chọn nhập dữ liệu hoặc upload file
 type = st.radio("Chọn cách nhập dữ liệu", options=["Nhập dữ liệu trực tiếp", "Upload file"])
 
@@ -136,8 +147,9 @@ elif type == "Upload file":
     
 
 st.write("# Danh sách RFM")
-with st.expander("**Giải thích kết quả như sau:**"):
-   st.image("images/KMeans_LDS9_SnakePlot_analysis_label.png")
+with st.expander("**Giải thích cluster như sau:**"):
+  st.image("images/KMeans_LDS9_SnakePlot_analysis_label.png")
+  st.image("images/KMeans_LDS9_SnakePlot_edited.png")
 
 _, col1, _, col2 = st.columns((30, 100, 50, 150))
 with col1:
