@@ -3,6 +3,7 @@ numpy
 pandas
 matplotlib
 seaborn
+squarify
 scikit-learn
 findspark==2.0.1
 pyspark==3.4.2

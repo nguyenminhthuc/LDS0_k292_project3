@@ -11,8 +11,64 @@ import pandas as pd
 
 
 
+# st.set_page_config(page_title="Mô tả dự án", layout="wide")
 st.set_page_config(page_title="Mô tả dự án")
+
+
+
+
 df = pd.read_csv("data/OnlineRetail_cleaned.csv", index_col="Unnamed: 0")
+
+
+
+
+# bug -> https://discuss.streamlit.io/t/anchor-tag/43688
+# # https://discuss.streamlit.io/t/need-to-automatically-go-at-the-top-of-the-page/34728
+# st.markdown("<div id='top'></div>", unsafe_allow_html=True)
+# # https://www.linkedin.com/pulse/creating-floating-button-css-javascript-step-by-step-chowdhury-proma
+# st.markdown(
+#     """
+#     <style>
+#     .floating-button-div {
+#         position: fixed;
+#         bottom: 20px;
+#         right: 20px;
+#     }
+
+#     .fb {
+#         background-color: #4CAF50;
+#         color: white;
+#         border: none;
+
+#         padding: 20px;
+#         font-size: 16px;
+#         cursor: pointer;
+#         box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5);
+#     }
+
+#     #myBtn:hover {
+#         background-color: #555;
+#     }
+#     </style>
+#     <script type="text/javascript">
+#         var floatingButtonContainer = document.querySelector('.floating-button-div');
+#         var scrollY = window.scrollY;
+
+
+#         window.addEventListener('scroll', function() {
+#             scrollY = window.scrollY;
+#             floatingButtonContainer.style.top = scrollY + window.innerHeight - 150 + 'px';
+#         });
+ 
+#     </script>
+#     <div class="floating-button-div">
+#         <a target="_self" href="#top">
+#             <button class="fb" id="myBtn" title="Đầu trang">Top</button>
+#         </a>
+#     </div>
+#     """,
+#     unsafe_allow_html=True,
+# )
 
 
 
@@ -29,7 +85,7 @@ with col3:
 
 
 
-st.markdown("### Mục tiêu:")
+st.subheader("Mục tiêu:", divider='gray')
 st.markdown(""" Xây dựng mô hình nhóm các khách hàng lại với nhau dựa trên các đặc điểm chung, điều này giúp cho doanh nghiệp:
 - Xây dựng các chiến dịch tiếp thị tốt hơn
 - Giữ chân nhiều khách hàng hơn
@@ -42,7 +98,7 @@ st.markdown(""" Xây dựng mô hình nhóm các khách hàng lại với nhau d
 
 
 
-st.markdown("### Customer Segmetation sử dụng RFM")
+st.subheader("Customer Segmetation sử dụng RFM", divider='gray')
 col1, padding, col2 = st.columns((150,10,200))
 with col1:
     col1.markdown("""
@@ -64,14 +120,14 @@ with col2:
 
 
 st.markdown('<div style="padding: 50px 5px;"></div>', unsafe_allow_html=True)
-st.markdown("### Dataset (ví dụ 10 dòng dữ liệu)")
+st.subheader("Dataset (ví dụ 10 dòng dữ liệu)", divider='gray')
 st.dataframe(df.sample(10), hide_index=True)
 
 
 
 
 st.markdown('<div style="padding: 50px 5px;"></div>', unsafe_allow_html=True)
-st.markdown("### Tiền xử lý dữ liệu")
+st.subheader("Tiền xử lý dữ liệu", divider='gray')
 st.image('images/Preprocessing.png')
 st.markdown('<div style="padding: 50px 5px;"></div>', unsafe_allow_html=True)
 st.image('images/Preprocessing2.png')
@@ -80,8 +136,8 @@ st.image('images/Preprocessing2.png')
 
 
 st.markdown('<div style="padding: 50px 5px;"></div>', unsafe_allow_html=True)
+st.subheader('Phân cụm RFM thủ công', divider='gray')
 st.markdown("""
-### Phân cụm RFM thủ công
 * Dựa theo rule đơn giản như sau:
     - Chia theo tiêu chí về doanh thu (Monetary) và thời gian mua (Recency) => xác định nhóm mang lại doanh thu nhiều và nhóm có tiềm năng mang lại doanh thu
     - Frequency được sử dụng ít quan trọng hơn 2 tiêu chí trên
@@ -107,6 +163,7 @@ st.markdown("""
 st.image("images/RFM_manual_heatmap.png")
 
 st.markdown('<div style="padding: 20px 5px;"></div>', unsafe_allow_html=True)
-st.markdown("""### Nhận xét:
+st.subheader('Nhận xét', divider='gray')
+st.markdown("""
 => **cần build với các model + RFM**, sau đó so sánh kết quả từ model với RFM thủ công
 """)

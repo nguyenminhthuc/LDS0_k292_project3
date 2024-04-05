@@ -13,6 +13,12 @@ import pandas as pd
 
 
 
+# st.set_page_config(page_title="Thống kê", layout="wide")
+st.set_page_config(page_title="Thống kê")
+
+
+
+
 df_rfm_agg = pd.read_csv("artifact/rfm_agg_KMeans_pyspark.csv")
 clustered_df = pd.read_csv("artifact/df_RFM_clusters_pyspark.csv")
 df = pd.read_csv("data/OnlineRetail_cleaned.csv")
@@ -20,7 +26,53 @@ df = pd.read_csv("data/OnlineRetail_cleaned.csv")
 
 
 
-st.set_page_config(page_title="Thống kê")
+# bug -> https://discuss.streamlit.io/t/anchor-tag/43688
+# # https://discuss.streamlit.io/t/need-to-automatically-go-at-the-top-of-the-page/34728
+# st.markdown("<div id='top'></div>", unsafe_allow_html=True)
+# # https://www.linkedin.com/pulse/creating-floating-button-css-javascript-step-by-step-chowdhury-proma
+# st.markdown(
+#     """
+#     <style>
+#     .floating-button-div {
+#         position: fixed;
+#         bottom: 20px;
+#         right: 20px;
+#     }
+
+#     .fb {
+#         background-color: #4CAF50;
+#         color: white;
+#         border: none;
+
+#         padding: 20px;
+#         font-size: 16px;
+#         cursor: pointer;
+#         box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5);
+#     }
+
+#     #myBtn:hover {
+#         background-color: #555;
+#     }
+#     </style>
+#     <script type="text/javascript">
+#         var floatingButtonContainer = document.querySelector('.floating-button-div');
+#         var scrollY = window.scrollY;
+
+
+#         window.addEventListener('scroll', function() {
+#             scrollY = window.scrollY;
+#             floatingButtonContainer.style.top = scrollY + window.innerHeight - 150 + 'px';
+#         });
+ 
+#     </script>
+#     <div class="floating-button-div">
+#         <a target="_self" href="#top">
+#             <button class="fb" id="myBtn" title="Đầu trang">Top</button>
+#         </a>
+#     </div>
+#     """,
+#     unsafe_allow_html=True,
+# )
 
 
 
@@ -124,6 +176,23 @@ ax.bar_label(ax.containers[0], label_type='edge')
 ax.set_title('Tần suất trung bình mua hàng của mỗi customer trong từng cluster', fontsize=18)
 st.pyplot(fig)
 
+
+st.markdown('<div style="padding: 50px 5px;"></div>', unsafe_allow_html=True)
+
+
+groupby_cluster = clustered_df.groupby('prediction', as_index=False)['Recency'].sum()
+fig, ax = plt.subplots(figsize=(6, 6))
+sns.barplot(x=groupby_cluster['prediction'].map(cluster_map), y=groupby_cluster['Recency'], ax=ax)
+ax.bar_label(ax.containers[0], label_type='edge')
+ax.set_title('Recency mua hàng của từng cluster', fontsize=18)
+st.pyplot(fig)
+
+fig, ax = plt.subplots(figsize=(6, 6))
+sns.barplot(x=df_rfm_agg['Cluster'].map(cluster_map2), y=df_rfm_agg['RecencyMean'], ax=ax)
+ax.bar_label(ax.containers[0], label_type='edge')
+ax.set_title('Trung bình Recency mua hàng của mỗi customer trong từng cluster', fontsize=18)
+st.pyplot(fig)
+
 combined_df = clustered_df[['CustomerID', 'Recency', 'Frequency', 'Monetary', 'prediction']].copy()
 combined_df['Cluster'] = combined_df['prediction'].map(cluster_map)
 combined_df['Country'] = combined_df['CustomerID'].map(lambda id: df[df['CustomerID']==id]['Country'].tolist()[0])
@@ -131,7 +200,7 @@ combined_df['FromDate'] = combined_df['CustomerID'].map(lambda id: df[df['Custom
 combined_df['ToDate'] = combined_df['CustomerID'].map(lambda id: df[df['CustomerID']==id]['Date'].max())
 # st.dataframe(combined_df, hide_index=True)
 for k,v in cluster_map.items():
-  st.markdown(f"### Danh sách các customer thuộc cluster {v}({k})")
+  st.subheader(f"Danh sách các customer thuộc cluster {v}({k})", divider='gray')
   df_temp = combined_df[combined_df['prediction']==k]
   # print(df_temp.head(2))
   st.dataframe(df_temp, hide_index=True)

@@ -10,7 +10,59 @@ import streamlit as st
 
 
 
+# st.set_page_config(page_title="Build Model", layout="wide")
 st.set_page_config(page_title="Build Model")
+
+
+
+
+# bug -> https://discuss.streamlit.io/t/anchor-tag/43688
+# # https://discuss.streamlit.io/t/need-to-automatically-go-at-the-top-of-the-page/34728
+# st.markdown("<div id='top'></div>", unsafe_allow_html=True)
+# # https://www.linkedin.com/pulse/creating-floating-button-css-javascript-step-by-step-chowdhury-proma
+# st.markdown(
+#     """
+#     <style>
+#     .floating-button-div {
+#         position: fixed;
+#         bottom: 20px;
+#         right: 20px;
+#     }
+
+#     .fb {
+#         background-color: #4CAF50;
+#         color: white;
+#         border: none;
+
+#         padding: 20px;
+#         font-size: 16px;
+#         cursor: pointer;
+#         box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5);
+#     }
+
+#     #myBtn:hover {
+#         background-color: #555;
+#     }
+#     </style>
+#     <script type="text/javascript">
+#         var floatingButtonContainer = document.querySelector('.floating-button-div');
+#         var scrollY = window.scrollY;
+
+
+#         window.addEventListener('scroll', function() {
+#             scrollY = window.scrollY;
+#             floatingButtonContainer.style.top = scrollY + window.innerHeight - 150 + 'px';
+#         });
+ 
+#     </script>
+#     <div class="floating-button-div">
+#         <a target="_self" href="#top">
+#             <button class="fb" id="myBtn" title="Đầu trang">Top</button>
+#         </a>
+#     </div>
+#     """,
+#     unsafe_allow_html=True,
+# )
 
 
 
@@ -22,7 +74,8 @@ st.image("images/Unsupervised-Learning-Clustering.png")
 
 
 st.markdown('<div style="padding: 10px 5px;"></div>', unsafe_allow_html=True)
-st.markdown("""# Build Model
+st.header('Build Model', divider='gray')
+st.markdown("""
 * ScikitLearn - LDS6:
     - RFM + KMeans
     - RFM + Hierachical Clustering
@@ -32,8 +85,8 @@ st.markdown("""# Build Model
 
 # LDS6 - RFM + KMeans
 st.markdown('<div style="padding: 50px 5px;"></div>', unsafe_allow_html=True)
-st.markdown(""" ## 1. RFM + KMeans - LDS6""")
-st.markdown("### Xác định k-clusters")
+st.header("1. RFM + KMeans - LDS6", divider='gray')
+st.subheader("Xác định k-clusters")
 col1, padding, col2 = st.columns((100, 5, 200))
 with col1:
     # col1.write('\n'*500)
@@ -42,7 +95,7 @@ with col2:
     col2.image("images/KMeans_LDS6_Elbow.png")
 
 st.markdown('<div style="padding: 10px 5px;"></div>', unsafe_allow_html=True)
-st.markdown("### Build KMeans model với k=5")
+st.subheader("Build KMeans model với k=5")
 st.markdown("""
 **ScatterPlot**  => các cluster tạo thành **các cluster tách biệt nhau hoàn toàn**
             """)
@@ -69,14 +122,15 @@ with col2:
 
 # LDS6 - RFM + Hierarchical Clustering
 st.markdown('<div style="padding: 50px 5px;"></div>', unsafe_allow_html=True)
-st.markdown(""" ## 2. RFM + Hierarchical Clustering - LDS6""")
-st.markdown("""### Xác định k-clusters
+st.header("2. RFM + Hierarchical Clustering - LDS6", divider='gray')
+st.subheader("Xác định k-clusters")
+st.markdown("""
 * Tính toán **linkage** và sử dụng **dendrogram** => **k=5**
 """)
 st.image("images/Hierarchical_LDS6_Dendrogram.png")
 
 st.markdown('<div style="padding: 10px 5px;"></div>', unsafe_allow_html=True)
-st.markdown("### Build Hierarchical model với k=5")
+st.subheader("Build Hierarchical model với k=5")
 st.markdown("""
 **ScatterPlot**  => các cluster tạo thành **các cluster chưa hoàn toàn tách biệt nhau**, vẫn có sự **chồng lấp giữa các cluster 1,2,3,4**
             """)
@@ -103,8 +157,9 @@ with col2:
 
 # LDS9 - RFM + KMeans
 st.markdown('<div style="padding: 50px 5px;"></div>', unsafe_allow_html=True)
-st.markdown(""" ## 3. RFM + KMeans - LDS9""")
-st.markdown("""### Xác định k-clusters
+st.header("3. RFM + KMeans - LDS9", divider='gray')
+st.subheader('Xác định k-clusters')
+st.markdown("""
 * Sử dụng cả Silhouette Score và Elbow Method để lựa chọn k-clusters
 * **=> k=4**
 """)
@@ -117,7 +172,7 @@ with col2:
     col2.image("images/KMeans_LDS9_Elbow.png")
 
 st.markdown('<div style="padding: 10px 5px;"></div>', unsafe_allow_html=True)
-st.markdown("### Build KMeans model với k=4")
+st.subheader("Build KMeans model với k=4")
 st.markdown("""
 **ScatterPlot**  => các cluster tạo thành **các cluster tách biệt nhau hoàn toàn**
             """)
@@ -143,8 +198,9 @@ with col2:
 
 
 st.markdown('<div style="padding: 50px 5px;"></div>', unsafe_allow_html=True)
-st.markdown("""# Kết luận:
+st.header('Kết luận', divider='gray')
+st.image('images/Comparison_Table.jpg')
+st.markdown("""
 * Đối với RFM + Hierarchical Clustering cho kết quả phân cụm không tốt, các cluster không tách biệt hoàn toàn với nhau
-* Đối với RFM + KMeans cho kết quả tốt hơn so với RFM thủ công vì tỉ lệ về số lượng customer trong mỗi nhóm không chênh lệch nhiều
-* => **Chọn RFM + KMeans với model của LDS9**
+* => **Chọn phân cụm khách hàng k = 4 với RFM & Kmeans - LDS9** vì số phân cụm nhỏ, đồng đều, dễ quản lý và phù hợp với 4 đặc tính mua hàng chủ yếu của khách hàng.
             """)

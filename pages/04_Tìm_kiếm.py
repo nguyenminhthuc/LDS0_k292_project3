@@ -12,6 +12,12 @@ import numpy as np
 
 
 
+# st.set_page_config(page_title="Tìm kiếm", layout="wide")
+st.set_page_config(page_title="Tìm kiếm")
+
+
+
+
 df = pd.read_csv('data/OnlineRetail_cleaned.csv', index_col='Unnamed: 0')
 # print(df.head(2))
 clustered_df = pd.read_csv('artifact/df_RFM_clusters_pyspark.csv', index_col='Unnamed: 0')
@@ -26,7 +32,53 @@ cluster_map = {
 
 
 
-st.set_page_config(page_title="Tìm kiếm")
+# bug -> https://discuss.streamlit.io/t/anchor-tag/43688
+# # https://discuss.streamlit.io/t/need-to-automatically-go-at-the-top-of-the-page/34728
+# st.markdown("<div id='top'></div>", unsafe_allow_html=True)
+# # https://www.linkedin.com/pulse/creating-floating-button-css-javascript-step-by-step-chowdhury-proma
+# st.markdown(
+#     """
+#     <style>
+#     .floating-button-div {
+#         position: fixed;
+#         bottom: 20px;
+#         right: 20px;
+#     }
+
+#     .fb {
+#         background-color: #4CAF50;
+#         color: white;
+#         border: none;
+
+#         padding: 20px;
+#         font-size: 16px;
+#         cursor: pointer;
+#         box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5);
+#     }
+
+#     #myBtn:hover {
+#         background-color: #555;
+#     }
+#     </style>
+#     <script type="text/javascript">
+#         var floatingButtonContainer = document.querySelector('.floating-button-div');
+#         var scrollY = window.scrollY;
+
+
+#         window.addEventListener('scroll', function() {
+#             scrollY = window.scrollY;
+#             floatingButtonContainer.style.top = scrollY + window.innerHeight - 150 + 'px';
+#         });
+ 
+#     </script>
+#     <div class="floating-button-div">
+#         <a target="_self" href="#top">
+#             <button class="fb" id="myBtn" title="Đầu trang">Top</button>
+#         </a>
+#     </div>
+#     """,
+#     unsafe_allow_html=True,
+# )
 
 
 
@@ -46,7 +98,7 @@ def print_data_2_cols(title, value):
     with col2:
       col2.write(value)
 
-st.subheader("Nhập mã khách hàng")
+st.subheader("Nhập mã khách hàng", divider='gray')
 # customer_id = st.text_input("")
 customer_id = st.selectbox(label=" ", placeholder="Nhập mã khác hàng, ví dụ: 14646", options=clustered_df.CustomerID.unique().tolist())
 if customer_id != "":
@@ -55,7 +107,7 @@ if customer_id != "":
         if customer_id not in clustered_df['CustomerID'].values:
             st.warning(f'Không tìm thấy khách hàng với id={customer_id}', icon="⚠️")
         else:
-            st.markdown("### Thông tin khách hàng")
+            st.subheader("Thông tin khách hàng", divider='gray')
             print_data_2_cols('* **CustomerID**', customer_id)
             print_data_2_cols('* **Quốc gia**', df[df.CustomerID==customer_id]['Country'].tolist()[0])
 

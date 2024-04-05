@@ -8,6 +8,9 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+import squarify
 import pickle
 
 import findspark
@@ -20,6 +23,15 @@ from pyspark.sql import SparkSession
 from pyspark.ml.clustering import KMeansModel
 from pyspark.ml.feature import VectorAssembler
 
+
+
+
+# st.set_page_config(page_title="Dự đoán", layout="wide")
+st.set_page_config(page_title="Dự đoán")
+
+
+
+
 conf = SparkConf()\
             .setMaster("local")\
             .setAppName("03_predict")
@@ -28,7 +40,7 @@ sc = SparkContext.getOrCreate(conf = conf)
 spark = SparkSession(sc)
 
 
-st.set_page_config(page_title="Dự đoán")
+
 # sample data
 df_sample = pd.read_csv("artifact/sample.csv")
 # pyspark model
@@ -39,6 +51,64 @@ with open("artifact/yeojohnson_transformer", 'rb') as f:
 # StandardScaler
 with open("artifact/StandardScaler", 'rb') as f:
   scaler = pickle.load(f)
+cluster_map = {
+  0: 'AVERAGE',
+  1: 'BEST',
+  2: 'RISK',
+  3: 'ABOVE_RISK'
+}
+
+
+
+
+
+# bug -> https://discuss.streamlit.io/t/anchor-tag/43688
+# # https://discuss.streamlit.io/t/need-to-automatically-go-at-the-top-of-the-page/34728
+# st.markdown("<div id='top'></div>", unsafe_allow_html=True)
+# # https://www.linkedin.com/pulse/creating-floating-button-css-javascript-step-by-step-chowdhury-proma
+# st.markdown(
+#     """
+#     <style>
+#     .floating-button-div {
+#         position: fixed;
+#         bottom: 20px;
+#         right: 20px;
+#     }
+
+#     .fb {
+#         background-color: #4CAF50;
+#         color: white;
+#         border: none;
+
+#         padding: 20px;
+#         font-size: 16px;
+#         cursor: pointer;
+#         box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5);
+#     }
+
+#     #myBtn:hover {
+#         background-color: #555;
+#     }
+#     </style>
+#     <script type="text/javascript">
+#         var floatingButtonContainer = document.querySelector('.floating-button-div');
+#         var scrollY = window.scrollY;
+
+
+#         window.addEventListener('scroll', function() {
+#             scrollY = window.scrollY;
+#             floatingButtonContainer.style.top = scrollY + window.innerHeight - 150 + 'px';
+#         });
+ 
+#     </script>
+#     <div class="floating-button-div">
+#         <a target="_self" href="#top">
+#             <button class="fb" id="myBtn" title="Đầu trang">Top</button>
+#         </a>
+#     </div>
+#     """,
+#     unsafe_allow_html=True,
+# )
 
 
 
@@ -82,16 +152,37 @@ def predict_RFM():
     ########### pyspark DF -> pandas DF
     df_predict = predictions.toPandas()
     df = df.assign(prediction=df_predict['prediction'].values)
-    df['Cluster'] = df.prediction.map({
-       0: "AVERAGE",
-       1: "BEST",
-       2: "RISK",
-       3: "ABOVE_RISK"
-    })
+    df['Cluster'] = df.prediction.map(cluster_map)
     st.session_state.cluster_RFM = df[['Cluster', 'Recency', 'Frequency', 'Monetary']]
 
+def plot_count(data, title, explode=None):
+    # https://www.pythoncharts.com/matplotlib/pie-chart-matplotlib/
 
-st.subheader("Nhập thông tin RFM của khách hàng")
+    fig, ax = plt.subplots(figsize=(6, 6))
+
+    # https://stackoverflow.com/questions/59644751/show-both-value-and-percentage-on-a-pie-chart
+    total = sum(i for i in data.values())
+    my_fmt = lambda x: '{:.1f}%\n({:.0f})'.format(x, total*x/100)
+
+    patches, texts, pcts = ax.pie(
+                                    data.values(), labels=data.keys(), autopct=my_fmt,
+                                    wedgeprops={'linewidth': 2.0, 'edgecolor': 'white'},
+                                    textprops={'fontsize':12},
+                                    # textprops={'size': 'x-large'},
+                                    # startangle=90,
+                                    explode=explode)
+    # For each wedge, set the corresponding text label color to the wedge's face color.
+    for i, patch in enumerate(patches):
+        texts[i].set_color(patch.get_facecolor())
+    plt.setp(pcts, color='black')
+    plt.setp(texts, fontweight=400)
+    ax.set_title(title, fontsize=18)
+    plt.tight_layout()
+    # plt.show()
+    # st.pyplot(fig)
+    return fig
+
+st.header("Nhập thông tin RFM của khách hàng", divider='gray')
 with st.expander("**Giải thích RFM như sau:**"):
   col1, padding, col2 = st.columns((150,10,200))
   with col1:
@@ -107,10 +198,17 @@ with st.expander("**Giải thích RFM như sau:**"):
 type = st.radio("Chọn cách nhập dữ liệu", options=["Nhập dữ liệu trực tiếp", "Upload file"])
 
 if type == "Nhập dữ liệu trực tiếp":
+  with st.expander("**Hướng dẫn nhập liệu và dự đoán**"):
+     st.markdown('''
+1. Kéo thả slider chọn số liệu phù hợp cho mỗi khách hàng
+2. Nhấn "**Thêm**" để chuyển số liệu vào bảng RFM bên dưới
+3. Nhấn "**Dự đoán**" để thực hiện việc dự đoán sau khi đã thêm dữ liệu RFM
+4. Nhấn "**Tạo mới**" để xóa các dữ liệu RFM đã thêm/dự đoán
+                 ''')
   with st.form("new_RFM", clear_on_submit=True):
     Recency = st.slider("Recency", 1, 365, 100, key="Recency")
     Frequency = st.slider("Frequency", 1, 1000, 5, key="Frequency")
-    Monetary = st.slider("Monetary", 1, 1000000, 100, key="Monetary")
+    Monetary = st.slider("Monetary", 1, 350000, 100, key="Monetary")
     st.form_submit_button("Thêm", on_click=new_RFM)
 elif type == "Upload file":
     st.subheader("Upload file")
@@ -146,12 +244,7 @@ elif type == "Upload file":
       st.dataframe(df_sample, hide_index=True)
     
 
-st.write("# Danh sách RFM")
-with st.expander("**Giải thích cluster như sau:**"):
-  st.image("images/KMeans_LDS9_SnakePlot_analysis_label.png")
-  st.image("images/KMeans_LDS9_SnakePlot_edited.png")
-
-_, col1, _, col2 = st.columns((30, 100, 50, 150))
+col1, col2 = st.columns((100, 100))
 with col1:
   if col1.button("Dự đoán"):
       if len(st.session_state['RFM']) > 0:
@@ -163,6 +256,14 @@ with col2:
     st.session_state['RFM'] = []
     st.session_state['cluster_RFM'] = []
 
+
+st.header("Danh sách RFM", divider='gray')
+with st.expander("**Giải thích cluster như sau:**"):
+  st.image("images/KMeans_LDS9_SnakePlot_analysis_label.png")
+  st.image("images/KMeans_LDS9_SnakePlot_edited.png")
+
+
+
 st.markdown('<div style="padding: 10px 5px;"></div>', unsafe_allow_html=True)
 
 col1, _, col2 = st.columns((250, 50, 450))
@@ -171,4 +272,84 @@ with col1:
   col1.dataframe(RFM_df, hide_index=True)
 with col2:
   cluster_RFM_df = pd.DataFrame(st.session_state.cluster_RFM)
-  col2.dataframe(cluster_RFM_df, hide_index=True)
+  col2.dataframe(cluster_RFM_df, 
+                 hide_index=True,
+                 width=550)
+
+st.markdown('<div style="padding: 50px 5px;"></div>', unsafe_allow_html=True)
+
+### Report & Visualization
+
+if cluster_RFM_df.shape[0] > 0:
+  # print(cluster_RFM_df)
+  rfm_agg = cluster_RFM_df.groupby('Cluster').agg({
+      'Recency':'mean',
+      'Frequency':'mean',
+      'Monetary':['mean', 'count']
+  }).round(0)
+  rfm_agg.columns = rfm_agg.columns.droplevel()
+  rfm_agg.columns = ['RecencyMean', 'FrequencyMean', 'MonetaryMean','Count']
+  rfm_agg['Precent'] = np.round( (rfm_agg['Count']/rfm_agg.Count.sum())*100, 2 )
+  rfm_agg = rfm_agg.reset_index()
+  data = {}
+  for idx, row in rfm_agg.iterrows():
+    data[row['Cluster']] = row['Count']
+  fig = plot_count(data, 'Tỉ lệ Customer giữa các cluster')
+  st.pyplot(fig)
+
+  st.markdown('<div style="padding: 50px 5px;"></div>', unsafe_allow_html=True)
+
+  groupby_cluster =  cluster_RFM_df.groupby('Cluster', as_index=False)['Monetary'].sum()
+  # print(groupby_cluster)
+  fig, ax = plt.subplots(figsize=(14, 10))
+  squarify.plot(
+    sizes=groupby_cluster['Monetary'],
+    text_kwargs={'fontsize':14, 'weight':'bold'},
+    label=['{} \n{:0,.2f} $ \n ({}%)'.format(*groupby_cluster.iloc[i], np.round( (groupby_cluster.iloc[i, 1]/groupby_cluster.Monetary.sum())*100, 2 )) for i in range(0, len(groupby_cluster))], 
+    alpha=0.5)
+  plt.title('Tỉ lệ doanh thu giữa các cluster', fontsize=26, fontweight='bold')
+  plt.axis('off')
+  st.pyplot(fig)
+
+  fig, ax = plt.subplots(figsize=(6, 6))
+  sns.barplot(x=rfm_agg['Cluster'], y=rfm_agg['MonetaryMean'], ax=ax)
+  ax.bar_label(ax.containers[0], label_type='edge')
+  ax.set_title('Trung bình doanh thu của mỗi Customer trong từng cluster', fontsize=18)
+  st.pyplot(fig)
+
+  st.markdown('<div style="padding: 50px 5px;"></div>', unsafe_allow_html=True)
+
+  groupby_cluster = cluster_RFM_df.groupby('Cluster', as_index=False)['Frequency'].sum()
+  fig, ax = plt.subplots(figsize=(6, 6))
+  sns.barplot(x=groupby_cluster['Cluster'], y=groupby_cluster['Frequency'], ax=ax)
+  ax.bar_label(ax.containers[0], label_type='edge')
+  ax.set_title('Tần suất mua hàng của từng cluster', fontsize=18)
+  st.pyplot(fig)
+
+  fig, ax = plt.subplots(figsize=(6, 6))
+  sns.barplot(x=rfm_agg['Cluster'], y=rfm_agg['FrequencyMean'], ax=ax)
+  ax.bar_label(ax.containers[0], label_type='edge')
+  ax.set_title('Tần suất trung bình mua hàng của mỗi customer trong từng cluster', fontsize=18)
+  st.pyplot(fig)
+
+  st.markdown('<div style="padding: 50px 5px;"></div>', unsafe_allow_html=True)
+
+  groupby_cluster = cluster_RFM_df.groupby('Cluster', as_index=False)['Recency'].sum()
+  fig, ax = plt.subplots(figsize=(6, 6))
+  sns.barplot(x=groupby_cluster['Cluster'], y=groupby_cluster['Recency'], ax=ax)
+  ax.bar_label(ax.containers[0], label_type='edge')
+  ax.set_title('Recency mua hàng của từng cluster', fontsize=18)
+  st.pyplot(fig)
+
+  fig, ax = plt.subplots(figsize=(6, 6))
+  sns.barplot(x=rfm_agg['Cluster'], y=rfm_agg['RecencyMean'], ax=ax)
+  ax.bar_label(ax.containers[0], label_type='edge')
+  ax.set_title('Trung bình Recency mua hàng của mỗi customer trong từng cluster', fontsize=18)
+  st.pyplot(fig)
+
+  # st.dataframe(combined_df, hide_index=True)
+  for k,v in cluster_map.items():
+    st.subheader(f"Danh sách các customer thuộc cluster {v}", divider='gray')
+    df_temp = cluster_RFM_df[cluster_RFM_df['Cluster']==v]
+    # print(df_temp.head(2))
+    st.dataframe(df_temp, hide_index=True)
