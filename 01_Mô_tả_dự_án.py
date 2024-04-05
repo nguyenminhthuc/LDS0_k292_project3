@@ -73,7 +73,7 @@ df = pd.read_csv("data/OnlineRetail_cleaned.csv", index_col="Unnamed: 0")
 
 
 
-st.markdown("# <center>Project 3:<span style='color:#4472C4; font-family:Calibri (Body);font-style: italic;'> Customer Segmentation</span><p>Học viên: <span style='font-weight:bold;'>Nguyễn Minh Thức</span></p></center>", unsafe_allow_html=True)
+st.markdown("# <center><span style='font-size:32px'>Final project<span>:<span style='color:#4472C4; font-family:Calibri (Body);font-style: italic;font-size:46px'> Customer Segmentation</span><p>Giáo viên: <span style='font-weight:bold;'>Khuất Thùy Phương</span><br/>Học viên: <span style='font-weight:bold;'>Nguyễn Minh Thức</span><br/>Học viên cùng nhóm: <span style='font-weight:bold;'>Trần Hạnh Triết</span></p></center>", unsafe_allow_html=True)
 col1, padding1, col2, padding2, col3 = st.columns((8,2,100,2,8))
 with col1:
     col1.write(' '*10)

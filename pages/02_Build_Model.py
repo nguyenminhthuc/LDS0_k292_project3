@@ -67,7 +67,7 @@ st.set_page_config(page_title="Build Model")
 
 
 
-st.markdown("# <center>Project 3:<span style='color:#4472C4; font-family:Calibri (Body);font-style: italic;'> Customer Segmentation</span><p>Học viên: <span style='font-weight:bold;'>Nguyễn Minh Thức</span></p></center>", unsafe_allow_html=True)
+st.markdown("# <center><span style='font-size:32px'>Final project<span>:<span style='color:#4472C4; font-family:Calibri (Body);font-style: italic;font-size:46px'> Customer Segmentation</span><p>Giáo viên: <span style='font-weight:bold;'>Khuất Thùy Phương</span><br/>Học viên: <span style='font-weight:bold;'>Nguyễn Minh Thức</span><br/>Học viên cùng nhóm: <span style='font-weight:bold;'>Trần Hạnh Triết</span></p></center>", unsafe_allow_html=True)
 st.image("images/Unsupervised-Learning-Clustering.png")
 
 
