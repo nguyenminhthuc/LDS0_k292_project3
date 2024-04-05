@@ -1,9 +1,11 @@
-###############################################################################
-# Họ tên:   Nguyễn Minh Thức
-# Lớp:      LDS0_k292 – ONLINE
-# Email:    nguyenminhthuc1987@gmail.com
-# Link:     https://lds0k292project3-fjkgkvwzxabyzuptxsnzkm.streamlit.app/
-###############################################################################
+############################################################################################
+# Lớp:                  LDS0_k292 – ONLINE
+# Final project:        Customer Segmentation
+# Link:                 https://lds0k292project3-aumweaa9bnsappppx4gj9pzv.streamlit.app/
+# Giáo viên:            Khuất Thùy Phương -   Email: tubirona@gmail.com
+# Học viên:             Nguyễn Minh Thức  -   Email: nguyenminhthuc1987@gmail.com
+# Học viên cùng nhóm:   Trần Hạnh Triết   -   Email: trietcv.colab@gmail.com
+############################################################################################
 
 import streamlit as st
 
