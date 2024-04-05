@@ -1,8 +1,9 @@
 ###############################################################################
-# Họ tên:   Nguyễn Minh Thức
-# Lớp:      LDS0_k292 – ONLINE
-# Email:    nguyenminhthuc1987@gmail.com
-# Link:     https://lds0k292project3-fjkgkvwzxabyzuptxsnzkm.streamlit.app/
+# GUI Project:  Customer Segmentation
+# Link:         https://lds0k292project3-fjkgkvwzxabyzuptxsnzkm.streamlit.app/
+# Lớp:          LDS0_k292 – ONLINE
+# Họ tên:       Nguyễn Minh Thức
+# Email:        nguyenminhthuc1987@gmail.com
 ###############################################################################
 
 import streamlit as st
