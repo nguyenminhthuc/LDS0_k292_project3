@@ -349,7 +349,7 @@ if cluster_RFM_df.shape[0] > 0:
   ax.set_title('Trung bình Recency mua hàng trong từng cluster', fontsize=18)
   st.pyplot(fig)
 
-for v in cluster_RFM_df.Cluster.unique().tolist():
-    st.subheader(f"Danh sách các RFM thuộc cluster {v}", divider='gray')
-    df_temp = cluster_RFM_df[cluster_RFM_df['Cluster']==v]
-    st.dataframe(df_temp, hide_index=True)
+  for v in cluster_RFM_df.Cluster.unique().tolist():
+      st.subheader(f"Danh sách các RFM thuộc cluster {v}", divider='gray')
+      df_temp = cluster_RFM_df[cluster_RFM_df['Cluster']==v]
+      st.dataframe(df_temp, hide_index=True)
