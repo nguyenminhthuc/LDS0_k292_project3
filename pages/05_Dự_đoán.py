@@ -301,7 +301,7 @@ if cluster_RFM_df.shape[0] > 0:
   squarify.plot(
     sizes=rfm_agg['Count'],
     text_kwargs={'fontsize':14, 'weight':'bold'},
-    label=['{} \n{:0,.2f} $ \n ({}%)'.format(rfm_agg.iloc[i].Cluster, rfm_agg.iloc[i].Count, np.round( (rfm_agg.iloc[i].Count/rfm_agg.Count.sum())*100, 2 )) for i in range(0, len(rfm_agg))], 
+    label=['{} \n{} \n ({}%)'.format(rfm_agg.iloc[i].Cluster, int(rfm_agg.iloc[i].Count), np.round( (rfm_agg.iloc[i].Count/rfm_agg.Count.sum())*100, 2 )) for i in range(0, len(rfm_agg))], 
     alpha=0.5)
   plt.title('Tỉ lệ RFM giữa các cluster', fontsize=26, fontweight='bold')
   plt.axis('off')
