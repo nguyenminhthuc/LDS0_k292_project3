@@ -295,7 +295,7 @@ if cluster_RFM_df.shape[0] > 0:
   data = {}
   for idx, row in rfm_agg.iterrows():
     data[row['Cluster']] = row['Count']
-  fig = plot_count(data, 'Tỉ lệ Customer giữa các cluster')
+  fig = plot_count(data, 'Tỉ lệ RFM giữa các cluster')
   st.pyplot(fig)
 
   st.markdown('<div style="padding: 50px 5px;"></div>', unsafe_allow_html=True)
@@ -315,7 +315,7 @@ if cluster_RFM_df.shape[0] > 0:
   fig, ax = plt.subplots(figsize=(6, 6))
   sns.barplot(x=rfm_agg['Cluster'], y=rfm_agg['MonetaryMean'], ax=ax)
   ax.bar_label(ax.containers[0], label_type='edge')
-  ax.set_title('Trung bình doanh thu của mỗi Customer trong từng cluster', fontsize=18)
+  ax.set_title('Trung bình doanh thu trong từng cluster', fontsize=18)
   st.pyplot(fig)
 
   st.markdown('<div style="padding: 50px 5px;"></div>', unsafe_allow_html=True)
