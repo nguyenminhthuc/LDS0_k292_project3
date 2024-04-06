@@ -223,7 +223,7 @@ elif type == "Upload file":
         if len(df.columns) == 3 \
           and all(col in ['Recency', 'Frequency', 'Monetary'] for col in df.columns.tolist()) \
           and all(df[col].dtype in [np.dtype('int64'), np.dtype('float64')] for col in df.columns):
-            st.session_state.RFM = df
+            st.session_state.RFM = df.to_dict('records')
         else:
             st.warning('file upload chứa dữ liệu không hợp lệ!', icon="⚠️")
         
@@ -349,9 +349,7 @@ if cluster_RFM_df.shape[0] > 0:
   ax.set_title('Trung bình Recency mua hàng của mỗi customer trong từng cluster', fontsize=18)
   st.pyplot(fig)
 
-  # st.dataframe(combined_df, hide_index=True)
-  for k,v in cluster_map.items():
+for v in cluster_RFM_df.Cluster.unique().tolist():
     st.subheader(f"Danh sách các customer thuộc cluster {v}", divider='gray')
     df_temp = cluster_RFM_df[cluster_RFM_df['Cluster']==v]
-    # print(df_temp.head(2))
     st.dataframe(df_temp, hide_index=True)
