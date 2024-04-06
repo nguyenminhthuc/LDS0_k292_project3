@@ -124,6 +124,7 @@ with col2:
 st.markdown('<div style="padding: 50px 5px;"></div>', unsafe_allow_html=True)
 st.subheader("Dataset (ví dụ 10 dòng dữ liệu)", divider='gray')
 st.dataframe(df.sample(10), hide_index=True)
+st.write("Download dataset [tại đây](https://archive.ics.uci.edu/static/public/352/online+retail.zip)")
 
 
 
