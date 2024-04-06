@@ -352,5 +352,4 @@ if cluster_RFM_df.shape[0] > 0:
   for v in cluster_RFM_df.Cluster.unique().tolist():
     st.subheader(f"Danh sách các customer thuộc cluster {v}", divider='gray')
     df_temp = cluster_RFM_df[cluster_RFM_df['Cluster']==v]
-    # print(df_temp.head(2))
     st.dataframe(df_temp, hide_index=True)
